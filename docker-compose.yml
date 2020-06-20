@@ -1,0 +1,27 @@
+version: '2'
+
+#letsencrypt server (nginx)
+
+services:
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Tokyo
+      - URL=llasuka.synology.me
+      - SUBDOMAINS=usanikki,redmine,storage,grafana,prometheus
+      - VALIDATION=http
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - letsencrypt-config:/config
+
+volumes:
+  letsencrypt-config:
+    external: true
